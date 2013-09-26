@@ -1,0 +1,58 @@
+﻿@using Incoding.MvcContrib
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap/bootstrap.min.css")"/>
+
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"> </script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/underscore.min.js")"> </script>                
+        <script type="text/javascript" src="@Url.Content("~/Scripts/mustache.js")"> </script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/incoding.framework.js")"> </script>      
+    </head>    
+    <body>
+    
+        @{
+            string tmplId = Guid.NewGuid().ToString();
+            using (var template = Html.Incoding().ScriptTemplate<KeyValueVm>(tmplId))
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Name</td>
+                        </tr>
+                    </thead>   
+                    <tbody>
+                        @using (var each = template.ForEach())
+                        {
+                            <tr>
+                                <td>@each.For(r => r.Value)</td>
+                                <td>@each.For(r => r.Text)</td>
+                                <td>
+                                    @(Html.When(JqueryBind.Click)
+                                          .Do()
+                                          .AjaxPost(HttpUtility.UrlDecode(Url.Action("Delete", new { id = each.For(r => r.Value) })))
+                                          .OnSuccess(dsl => dsl.With(r => r.Self().Closest(selector => selector.Tag(HtmlTag.Div)))
+                                                               .Core()
+                                                               .Trigger.Incoding())
+                                          .AsHtmlAttributes()
+                                          .ToButton("Delete"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+        }
+
+        @(Html.When(JqueryBind.InitIncoding)
+              .Do()
+              .AjaxGet(Url.Action("Fetch"))
+              .OnSuccess(dsl => dsl.Self().Core().Insert.WithTemplate(Selector.Jquery.Id(tmplId)).Html())
+              .AsHtmlAttributes(new { @class = "container" })
+              .ToDiv())
+    </body>
+</html>

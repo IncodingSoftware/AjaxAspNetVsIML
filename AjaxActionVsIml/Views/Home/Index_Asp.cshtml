@@ -1,0 +1,39 @@
+﻿@model List<Incoding.MvcContrib.KeyValueVm>
+<html >
+    <head> 
+        <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap/bootstrap.min.css")"/>       
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"> </script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"> </script>   
+    </head>    
+    <body>
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Name</td>
+                    </tr>
+                </thead>
+                <tbody id="controlsHolder">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Value</td>
+                            <td>@item.Text</td>
+                            <td>
+                                @Ajax.ActionLink("Delete", "DeleteAsp", new { id = item.Value }, new AjaxOptions
+                                                                                                     {
+                                                                                                             UpdateTargetId = "controlsHolder", 
+                                                                                                             InsertionMode = InsertionMode.Replace, 
+                                                                                                             HttpMethod = "POST"
+                                                                                                     })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </body>
+</html>
