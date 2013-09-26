@@ -16,24 +16,9 @@
                     </tr>
                 </thead>
                 <tbody id="controlsHolder">
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Value</td>
-                            <td>@item.Text</td>
-                            <td>
-                                @Ajax.ActionLink("Delete", "DeleteAsp", new { id = item.Value }, new AjaxOptions
-                                                                                                     {
-                                                                                                             UpdateTargetId = "controlsHolder", 
-                                                                                                             InsertionMode = InsertionMode.Replace, 
-                                                                                                             HttpMethod = "POST"
-                                                                                                     })
-                            </td>
-                        </tr>
-                    }
+                    @Html.Partial("Index_Asp_Tbody",Model)      
                 </tbody>
             </table>
-
         </div>
     </body>
 </html>
