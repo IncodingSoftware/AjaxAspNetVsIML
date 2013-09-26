@@ -10,9 +10,12 @@
     </head>    
     <body>    
         @{
+            string chkId = Guid.NewGuid().ToString();
             string tmplId = Guid.NewGuid().ToString();
             using (var template = Html.Incoding().ScriptTemplate<KeyValueVm>(tmplId))
             {
+                <label>Can delete?</label>
+                <input type="checkbox" id="@chkId" checked="checked"/>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -31,9 +34,11 @@
                                     @(Html.When(JqueryBind.Click)
                                           .Do()
                                           .AjaxPost(HttpUtility.UrlDecode(Url.Action("Delete", new { id = each.For(r => r.Value) })))
-                                          .OnSuccess(dsl => dsl.With(r => r.Self().Closest(selector => selector.Tag(HtmlTag.Div)))
+                                          .OnBreak(dsl => dsl.Utilities.Window.Alert("Can not delete  entity because checkbox unchecked"))
+                                          .OnBegin(dsl => dsl.Self().Core().Break.If(r => r.Is(() => Selector.Jquery.Id(chkId) == false)))
+                                          .OnSuccess(dsl => dsl.With(r => r.Self().Closest(selector => selector.Tag(HtmlTag.Tr)))
                                                                .Core()
-                                                               .Trigger.Incoding())
+                                                               .JQuery.Manipulation.Remove())
                                           .AsHtmlAttributes()
                                           .ToButton("Delete"))
                                 </td>
@@ -42,6 +47,7 @@
                     </tbody>
                 </table>
             }
+
         }
         @(Html.When(JqueryBind.InitIncoding)
               .Do()

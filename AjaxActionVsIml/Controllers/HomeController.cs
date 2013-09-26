@@ -61,6 +61,12 @@
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Index_Extend_Iml()
+        {
+            return View();
+        }
+
         #endregion
 
         static Dictionary<string, KeyValueVm> GetData()
