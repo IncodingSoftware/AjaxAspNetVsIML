@@ -13,4 +13,4 @@ How it work:
 </ul>
 
 <p>Also you can lool extend IML version </p>
-<p>Please follow on link for more details about this code.</p>
+<p>Please follow on [link](http://blog.incframework.com/ru/ajax-actionlink-vs-iml/) for more details about this code.</p>
